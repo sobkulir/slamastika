@@ -118,7 +118,7 @@ const PREVIEW = document.getElementById('preview')
 const DEFAULT_TEXT =
 `# Šlamastika
 Store your Markdown notes in local storage.
-* To edit this document **press I**.
+* To edit the document **press I**.
 * To save the document **press Ctrl+Enter**.`
 const LS_KEY = 'slamastika'
 
