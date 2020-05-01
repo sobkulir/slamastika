@@ -15,8 +15,9 @@ rm -rf *
 mv .dist/* .
 rm -rf .dist
 
-git add *
+git add -A .
 git commit -m "deploy"
 git push -f origin gh-pages
 
 git checkout master
+git clean -df
