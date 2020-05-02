@@ -116,10 +116,11 @@ function parse(md, prevLinks) {
 const TEXT_AREA = document.getElementById('textArea')
 const PREVIEW = document.getElementById('preview')
 const DEFAULT_TEXT =
-`# Šlamastika
+  `# Šlamastika
 Store your Markdown notes in local storage.
 * To edit the document **press I**.
-* To save the document **press Ctrl+Enter**.`
+* To save the document **press Ctrl+Enter**.
+* To insert current date **press Ctrl+I**.`
 const LS_KEY = 'slamastika'
 
 const STATE = {
@@ -155,16 +156,21 @@ function stateToPreview() {
 
 document.onkeyup = function (e) {
   console.log(e)
-  if ((e.key === "i" || e.key === "I") && !STATE.isEdit) {
+  if (e.key.toLowerCase() === "i" && !STATE.isEdit) {
     stateToEdit()
   } else if (e.key === "Enter" && e.ctrlKey && STATE.isEdit) {
     stateToPreview()
+  } else if (e.key.toLowerCase() === "i" && e.ctrlKey && STATE.isEdit) {
+    if (document.activeElement === TEXT_AREA) {
+      document.execCommand(
+        'insertText', false /*no UI*/, new Date().toLocaleDateString("en-US"))
+    }
   }
 };
 
 function init() {
   const text = window.localStorage.getItem(LS_KEY)
-  TEXT_AREA.value = (text) ? text : STATE.text
+  TEXT_AREA.value = text ? text : STATE.text
   stateToPreview()
 }
 
