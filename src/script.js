@@ -125,7 +125,6 @@ const LS_KEY = 'slamastika'
 
 const STATE = {
   isEdit: false,
-  text: DEFAULT_TEXT
 }
 
 function stateToEdit() {
@@ -140,25 +139,24 @@ function stateToPreview() {
   PREVIEW.style.display = "block"
   TEXT_AREA.style.display = "none"
   // Save logic
-  const text = TEXT_AREA.value
-  if (text === "") {
+  if (TEXT_AREA.value === "") {
     window.localStorage.removeItem(LS_KEY)
-    STATE.text = DEFAULT_TEXT
+    TEXT_AREA.value = DEFAULT_TEXT
   } else {
-    window.localStorage.setItem(LS_KEY, text)
-    STATE.text = text
+    window.localStorage.setItem(LS_KEY, TEXT_AREA.value)
   }
   // Display
-  PREVIEW.innerHTML = parse(STATE.text)
+  PREVIEW.innerHTML = parse(TEXT_AREA.value)
 
   STATE.isEdit = false
 }
 
-document.onkeyup = function (e) {
-  console.log(e)
+document.onkeydown = function (e) {
   if (e.key.toLowerCase() === "i" && !STATE.isEdit) {
+    e.preventDefault();
     stateToEdit()
   } else if (e.key === "Enter" && e.ctrlKey && STATE.isEdit) {
+    e.preventDefault();
     stateToPreview()
   } else if (e.key.toLowerCase() === "i" && e.ctrlKey && STATE.isEdit) {
     if (document.activeElement === TEXT_AREA) {
@@ -170,7 +168,7 @@ document.onkeyup = function (e) {
 
 function init() {
   const text = window.localStorage.getItem(LS_KEY)
-  TEXT_AREA.value = text ? text : STATE.text
+  TEXT_AREA.value = text ? text : DEFAULT_TEXT
   stateToPreview()
 }
 
